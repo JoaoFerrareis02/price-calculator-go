@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+
+	"github.com/JoaoFerrareis02/price-calculator-go/filemanager"
 	"github.com/JoaoFerrareis02/price-calculator-go/prices"
 )
 
@@ -10,7 +13,8 @@ func main() {
 
 	for _, taxRate := range taxRates {
 
-		priceJob := prices.NewTaxIncludedPriceJob(taxRate)
+		fm := filemanager.New("prices.txt", fmt.Sprintf("result_%.0f.json", taxRate*100))
+		priceJob := prices.NewTaxIncludedPriceJob(fm, taxRate)
 		priceJob.Process()
 
 	}
