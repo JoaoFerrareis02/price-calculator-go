@@ -4,7 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strconv"
+
+	"github.com/JoaoFerrareis02/price-calculator-go/conversion"
 )
 
 type TaxIncludedPricesJob struct {
@@ -39,24 +40,16 @@ func (job *TaxIncludedPricesJob) LoadData() {
 		return
 	}
 
-	prices := make([]float64, len(lines))
+	prices, err := conversion.StringsToFloats(lines)
 
-	for lineIndex, lineValue := range lines {
-
-		floatValue, err := strconv.ParseFloat(lineValue, 64)
-
-		if err != nil {
-			fmt.Println("Failed to convert to float64.")
-			fmt.Println(err)
-			file.Close()
-			return
-		}
-
-		prices[lineIndex] = floatValue
-
+	if err != nil {
+		fmt.Println(err)
+		file.Close()
+		return
 	}
 
 	job.InputPrices = prices
+	file.Close()
 
 }
 
